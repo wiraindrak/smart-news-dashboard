@@ -5,7 +5,6 @@ import plotly.express as px
 from wordcloud import WordCloud
 from nltk.corpus import stopwords
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 competitors_data = pd.read_csv("data/competitors_sentiment.csv")
 keyword_sentiment = pd.read_csv("data/keyword_sentiment.csv")
