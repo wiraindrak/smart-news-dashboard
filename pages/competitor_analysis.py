@@ -17,8 +17,9 @@ def set_data(start_date, end_date):
     data_key = keyword_sentiment
     data_ner = ner_sentiment
 
-    data_ner = data_ner.loc[data_ner['entity'].str.contains(r'[A-Za-z]+') == True]
-    data_ner = data_ner.loc[data_ner['entity'].str.len() > 2]
+    data_ner = data_ner[data_ner['entity'].str.contains(r'[A-Za-z]') == True]
+    data_ner = data_ner[data_ner['entity'].str.contains('#') == False]
+    data_ner = data_ner[data_ner['entity'].str.len() > 2]
 
     data_all['date'] = data_all['PublishDate'].apply(lambda x: x.split()[0])
     data_key['date'] = data_key['PublishDate'].apply(lambda x: x.split()[0])
@@ -48,7 +49,7 @@ def set_wordcloud(data):
     list_stopwords = set(stopwords.words('indonesian'))
     text = " ".join(keyword for keyword in data.entity)
     wordcloud = WordCloud(stopwords=list_stopwords).generate(text)
-    fig, ax = plt.subplots(figsize = (12, 20))
+    fig, ax = plt.subplots(figsize = (20, 20))
     ax.imshow(wordcloud)
     plt.axis("off")
     return fig
@@ -110,15 +111,15 @@ def set_feed(data_all, data_key, data_ner):
     col1.pyplot(fig_wc_kompas)
     col2.pyplot(fig_wc_tribun)
 
-    col1.markdown('#### Top Positive Entity Distribution')
-    col2.markdown('#### Top Positive Entity Distribution')
+    col1.markdown('#### Top Positive Entity Distribution ✅')
+    col2.markdown('#### Top Positive Entity Distribution ✅')
     fig_wc_kompas = set_entity_positive_bar(data_ner[data_ner['source'] == 'kompas'])
     fig_wc_tribun = set_entity_positive_bar(data_ner[data_ner['source'] == 'tribun'])
     col1.pyplot(fig_wc_kompas)
     col2.pyplot(fig_wc_tribun)
 
-    col1.markdown('#### Top Negative Entity Distribution')
-    col2.markdown('#### Top Negative Entity Distribution')
+    col1.markdown('#### Top Negative Entity Distribution ❌')
+    col2.markdown('#### Top Negative Entity Distribution ❌')
     fig_wc_kompas = set_entity_negative_bar(data_ner[data_ner['source'] == 'kompas'])
     fig_wc_tribun = set_entity_negative_bar(data_ner[data_ner['source'] == 'tribun'])
     col1.pyplot(fig_wc_kompas)
