@@ -25,6 +25,10 @@ def set_data(start_date, end_date):
     data_key['date'] = data_key['PublishDate'].apply(lambda x: x.split()[0])
     data_ner['date'] = data_ner['PublishDate'].apply(lambda x: x.split()[0])
 
+    data_all['date'] = data_all['date'].apply(lambda x: x.split('T')[0])
+    data_key['date'] = data_key['date'].apply(lambda x: x.split('T')[0])
+    data_ner['date'] = data_ner['date'].apply(lambda x: x.split('T')[0])
+
     data_all = data_all[ (data_all['date'] >= start_date) & (data_all['date'] <= end_date) ]
     data_key = data_key[ (data_key['date'] >= start_date) & (data_key['date'] <= end_date) ]
     data_ner = data_ner[ (data_ner['date'] >= start_date) & (data_ner['date'] <= end_date) ]
