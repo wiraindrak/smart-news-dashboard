@@ -1,8 +1,10 @@
 import streamlit as st
-from st_pages import Page, show_pages
+from st_pages import Page, show_pages, add_page_title
 import nltk
 
 nltk.download('stopwords')
+
+add_page_title()
 
 show_pages(
     [
@@ -24,7 +26,7 @@ st.markdown(
     """
     ### Select on the left panel what you want to explore:
     - With 🔭 Trending Content Feed, you will see a timeline aggregator that displays trending content based on our scraper.
-    - With 👁️ Competitor Analysis,you will see a timeline aggregator that displays competitor content based on our scraper.
+    - With 👁️ Competitor Feed,you will see a timeline aggregator that displays competitor content based on our scraper.
     - With ⚖️ Competitor Analysis, you will see the competitor analysis results and you can see each its sentity and sentiment.
     """
 )

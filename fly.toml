@@ -1,5 +1,5 @@
 [processes]
-web = treamlit run --server.port 8501 app.py
+web = source setup.sh && streamlit run --server.port 8501 app.py
 
 [[services]]
   processes = ["web"] # this service only applies to the web process
