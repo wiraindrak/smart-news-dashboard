@@ -28,23 +28,6 @@ def set_data(start_date, end_date):
     data_key = data_key[ (data_key['date'] >= start_date) & (data_key['date'] <= end_date) ]
     data_ner = data_ner[ (data_ner['date'] >= start_date) & (data_ner['date'] <= end_date) ]
 
-    # if filterby == "All":
-    #     data_all = data_all
-    #     data_key = data_key
-    #     data_ner = data_ner
-    # elif filterby == "Positive":
-    #     data_all = data_all[data_all["sentiment"] == 'positive']
-    #     data_key = data_key[data_key["sentiment"] == 'positive']
-    #     data_ner = data_ner[data_ner["sentiment"] == 'positive']
-    # elif filterby == "Negative":
-    #     data_all = data_all[data_all["sentiment"] == 'negative']
-    #     data_key = data_key[data_key["sentiment"] == 'negative']
-    #     data_ner = data_ner[data_ner["sentiment"] == 'negative']
-    # elif filterby == "Neutral":
-    #     data_all = data_all[data_all["sentiment"] == 'neutral']
-    #     data_key = data_key[data_key["sentiment"] == 'neutral']
-    #     data_ner = data_ner[data_ner["sentiment"] == 'neutral']
-
     data_all = data_all.dropna()
     data_all = data_all.reset_index()
 
@@ -65,7 +48,7 @@ def set_wordcloud(data):
     list_stopwords = set(stopwords.words('indonesian'))
     text = " ".join(keyword for keyword in data.entity)
     wordcloud = WordCloud(stopwords=list_stopwords).generate(text)
-    fig, ax = plt.subplots(figsize = (12, 12))
+    fig, ax = plt.subplots(figsize = (12, 20))
     ax.imshow(wordcloud)
     plt.axis("off")
     return fig
