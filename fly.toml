@@ -4,6 +4,6 @@ web = source setup.sh && streamlit run --server.port $PORT app.py
 [[services]]
   processes = ["web"] # this service only applies to the web process
   http_checks = []
-  internal_port = 8080
+  internal_port = 8501
   protocol = "tcp"
   script_checks = []
