@@ -1,15 +1,25 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+from streamlit_tags import st_tags_sidebar
 
 
 competitors_data = pd.read_csv("data/competitors_sentiment.csv")
+ner_sentiment = pd.read_csv("data/ner_sentiment.csv")
+
+datner_sentimenta_ner = ner_sentiment[ner_sentiment['entity'].str.contains(r'[A-Za-z]') == True]
+ner_sentiment = ner_sentiment[ner_sentiment['entity'].str.contains('#') == False]
+ner_sentiment = ner_sentiment[ner_sentiment['entity'].str.len() > 2]
+
+list_entities = set(list(ner_sentiment['entity']))
 
 
-def set_data(competitor, start_date, end_date, filterby):
+def set_data(competitor, start_date, end_date, filterby, list_entities):
     data = competitors_data
+    data_ner = ner_sentiment
 
     data['date'] = data['PublishDate'].apply(lambda x: x.split()[0])
+    data['date'] = data['date'].apply(lambda x: x.split('T')[0])
 
     if competitor == 'Kompas':
         data = data[data['source'] == 'kompas']
@@ -27,11 +37,15 @@ def set_data(competitor, start_date, end_date, filterby):
     elif filterby == "Neutral":
         data = data[data["sentiment"] == 'neutral']
 
+    if list_entities:
+        list_ids = set(list(data_ner[data_ner['entity'].isin(list_entities)]['Article_ID']))
+        data = data[data['Article_ID'].isin(list_ids)]
 
     data = data.sort_values(by='PublishDate', ascending=False)
     data = data.dropna()
     data = data.reset_index()
-    return data
+
+    return data, list_entities
 
 def set_feed(data):
 
@@ -68,6 +82,14 @@ if __name__ == "__main__":
         ("All", "Positive", "Negative", "Neutral")
     )
 
-    data = set_data(competitor, start_date, end_date, filterby)
+    entities = st_tags_sidebar(
+                label='Filter Content By Entity',
+                text='Press enter to add more',
+                value=[],
+                suggestions=list(list_entities),
+                maxtags = 4,
+                key='2')
+
+    data, list_entities = set_data(competitor, start_date, end_date, filterby, entities)
 
     set_feed(data)

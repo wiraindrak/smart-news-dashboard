@@ -6,3 +6,4 @@ nltk
 wordcloud
 st_pages
 seaborn
+streamlit-tags 
